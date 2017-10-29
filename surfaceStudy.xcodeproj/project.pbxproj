@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		041D892E1F94EE0300E8C6DB /* Surfacer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 041D892C1F94EE0300E8C6DB /* Surfacer.cpp */; };
 		041F50C91F9B8C5900FAC5F4 /* generateGcode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 041F50C71F9B8C5900FAC5F4 /* generateGcode.cpp */; };
+		0434FBD31FA6200200E6CDE5 /* Tree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0434FBD11FA6200200E6CDE5 /* Tree.cpp */; };
 		04E6E39C1F99273900F1D905 /* makeStl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04E6E39A1F99273900F1D905 /* makeStl.cpp */; };
 		1CD33E884D9E3358252E82A1 /* ofxToggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 907C5B5E104864A2D3A25745 /* ofxToggle.cpp */; };
 		483908258D00B98B4BE69F07 /* ofxLabel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 78D67A00EB899FAC09430597 /* ofxLabel.cpp */; };
@@ -57,6 +58,8 @@
 		041D892D1F94EE0300E8C6DB /* Surfacer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Surfacer.hpp; sourceTree = "<group>"; };
 		041F50C71F9B8C5900FAC5F4 /* generateGcode.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = generateGcode.cpp; sourceTree = "<group>"; };
 		041F50C81F9B8C5900FAC5F4 /* generateGcode.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = generateGcode.hpp; sourceTree = "<group>"; };
+		0434FBD11FA6200200E6CDE5 /* Tree.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Tree.cpp; sourceTree = "<group>"; };
+		0434FBD21FA6200200E6CDE5 /* Tree.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Tree.hpp; sourceTree = "<group>"; };
 		04E6E39A1F99273900F1D905 /* makeStl.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = makeStl.cpp; sourceTree = "<group>"; };
 		04E6E39B1F99273900F1D905 /* makeStl.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = makeStl.hpp; sourceTree = "<group>"; };
 		0A1DAC09F322AE313A40706D /* ofxToggle.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxToggle.h; path = ../../../addons/ofxGui/src/ofxToggle.h; sourceTree = SOURCE_ROOT; };
@@ -178,6 +181,8 @@
 				041F50C81F9B8C5900FAC5F4 /* generateGcode.hpp */,
 				04E6E39A1F99273900F1D905 /* makeStl.cpp */,
 				04E6E39B1F99273900F1D905 /* makeStl.hpp */,
+				0434FBD11FA6200200E6CDE5 /* Tree.cpp */,
+				0434FBD21FA6200200E6CDE5 /* Tree.hpp */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -281,6 +286,7 @@
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				04E6E39C1F99273900F1D905 /* makeStl.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
+				0434FBD31FA6200200E6CDE5 /* Tree.cpp in Sources */,
 				856AA354D08AB4B323081444 /* ofxBaseGui.cpp in Sources */,
 				5CBB2AB3A60F65431D7B555D /* ofxButton.cpp in Sources */,
 				041D892E1F94EE0300E8C6DB /* Surfacer.cpp in Sources */,

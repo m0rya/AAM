@@ -4,6 +4,7 @@
 #include "ofxGui.h"
 #include "Surfacer.hpp"
 #include "generateGcode.hpp"
+#include "Tree.hpp"
 
 class ofApp : public ofBaseApp{
     

@@ -16,17 +16,22 @@ private:
     string fileName;
     string textGcode;
     
-    int tempExtruder = 210;
+    float layerHeight;
+    float extruderDiameter;
+    float filamentDiameter;
+
+    int tempExtruder = 190;
     
     
 public:
     
     generateGcode();
     generateGcode(string _name);
+    generateGcode(string _name, float _layerHeight);
     
     //setter
     void setFilename(string _name);
-    
+    void setLayerHeight(float _layerHeight);
     
     //
     
@@ -34,6 +39,7 @@ public:
     void addGcode(string code);
     void finishGcode();
     void outputFile();
+    float calcEValue(ofVec3f point1, ofVec3f point2, float e);
 
     
     

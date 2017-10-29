@@ -36,9 +36,15 @@ ofMesh baseObj;
 vector<ofVec3f> angleTest;
 
 
-//testGcode;
+//testGcode;-
 vector<ofVec3f> testGcode;
 generateGcode testGcoder("testGcode");
+
+
+//Tree
+
+Tree tree = Tree();
+
 
 //--------------------------------------------------------------
 void ofApp::setup(){
@@ -62,13 +68,15 @@ void ofApp::setup(){
      */
     
     gui.add(finenessSphere.setup("fineness Sphere", 100, 1, 500));
-    gui.add(posX.setup("pos x", 50, 0, 250));
-    gui.add(posY.setup("pos y", 50, 0, 500));
+    gui.add(posX.setup("pos x", 0, 0, 50));
+    gui.add(posY.setup("pos y", 50, 0, 100));
+    /*
     gui.add(radiusOfTuno.setup("radius Tuno", 5, 1, 10));
     gui.add(radiusHalfSphere.setup("radius half sphere", 20, 5, 40));
     gui.add(heightOfTuno.setup("height of Tuno", 100, 10, 300));
     gui.add(tes.setup("tes", 0, 0, 500));
     gui.add(decreasing.setup("decreasing", 5, 1, 10));
+     */
     
     //ornament gui
     gui.add(ornamentRadius.setup("ornament radius", 15, 5, 30));
@@ -93,14 +101,17 @@ void ofApp::setup(){
     pointlight.setPosition(lightPos);
     pointlight.enable();
     
-    setMesh();
-    surfacer.setMesh();
-    surfacer.setColor(ofColor(255, 0, 0));
+    //setMesh();
+    //surfacer.setMesh();
+    //surfacer.setColor(ofColor(255, 0, 0));
     setMeshPolar();
-    generateGcode();
-    generateTuno();
+    //generateGcode();
+    //generateTuno();
     //generateGcode2();
 
+    
+    //Tree
+    //tree.buildBranch();
     
 }
 
@@ -132,12 +143,12 @@ void ofApp::update(){
     
      */
     
-    //setMeshPolar();
+    setMeshPolar();
     //generateTuno();
-    //generateOrnament();
+    generateOrnament();
     
 
-    generateTestGcode();
+    //generateTestGcode();
 }
 
 //--------------------------------------------------------------
@@ -182,11 +193,15 @@ void ofApp::draw(){
 
     //polarMesh.draw();
     //polarWire.drawWireframe();
-    //ofDrawSphere(debugPoint[101*para6 + para7].x, debugPoint[101*para6 + para7].y, debugPoint[101*para6 + para7].z, 5);
+    
+    
+    /*
+    ofDrawSphere(debugPoint[posX * (finenessSphere +1) + posY].x, debugPoint[posX * (finenessSphere + 1) + posY].y, debugPoint[posX * (finenessSphere + 1) + posY].z, 5);
 
+     */
 
     //generateOrnament
-    /*
+    
     ofSetColor(255);
     for(int i=0; i<debugPoint.size(); i++){
         ofDrawBox(debugPoint[i].x, debugPoint[i].y, debugPoint[i].z, 0.1);
@@ -200,12 +215,14 @@ void ofApp::draw(){
     //}
 
     for(int i=0; i<ornament.size()-1; i++){
-           ofDrawBox(ornament[i].x, ornament[i].y, ornament[i].z, 0.1);
+       ofDrawBox(ornament[i].x, ornament[i].y, ornament[i].z, 0.1);
     }
 
-    ofSetColor(ofColor(0, 255, 0));
-    ofDrawBox(tuno[tes].x, tuno[tes].y, tuno[tes].z, 0.1);
-    */
+    //ofSetColor(ofColor(0, 255, 0));
+    //ofDrawBox(tuno[tes].x, tuno[tes].y, tuno[tes].z, 0.1);
+    
+    
+    
     
     //generate angle test
     /*
@@ -223,15 +240,19 @@ void ofApp::draw(){
         ofDrawLine(angleTest[4*i+2], angleTest[4*i+3]);
         ofDrawLine(angleTest[4*i+3], angleTest[4*i]);
     }
+     
      */
-    
+    /*
     ofSetColor(255, 0, 0);
     cout << testGcode.size() << endl;
     for(int i=0; i<testGcode.size(); i++){
         ofDrawBox(testGcode[i].x, testGcode[i].y, testGcode[i].z, 0.5);
     }
+    */
     
     
+    //Tree
+    //tree.draw();
     
     
     cam.end();
@@ -253,17 +274,18 @@ void ofApp::generateTestGcode(){
     
     testGcode.clear();
     
-
+    vector<ofVec3f> basePoint;
     
     
-    for(float i=0; i<heightTest; i+=0.15){
-        for(int j=0; j<5; j++){
+  
+    for(int j=0; j<5; j++){
             
-            for(int k=0; k<180; k+=1){
-                testGcode.push_back(ofVec3f(float(10/180.0) * k + j*10, 0, 5*sin(ofDegToRad(k))) + upper*i);
-            }
+        for(int k=0; k<180; k+=1){
+            testGcode.push_back(ofVec3f(float(10/180.0) * k + j*10, 0, 5*sin(ofDegToRad(k))));
+            //basePoint.push_back(ofVec3f(foat(10/180.0) * k + j*10, 0, 5*sin(ofDegToRad(k))) + upper*i);
         }
     }
+    
 
     testGcoder.initGcode();
     string tmpGcode = "G1 Z50 F1800\n";
@@ -275,23 +297,74 @@ void ofApp::generateTestGcode(){
     
     float e=0.0;
     
-    for(float i=0; i<heightTest; i+=0.15){
-        for(int j=0; j<5; j++){
-            for(int k=0; k<180; k+=1){
-                if((k+j*180) == 0){
-                    e += 0.1;
+    for(int i=0; i<5; i++){
+        for(int j=0; j<5*180; j++){
+            
+            if(i%2 == 0){
+                if(j == 0){
+                    e += 0;
                 }else{
-                    e += float(testGcode[k+j*180].distance(testGcode[k+j*180-1])/0.223 * 0.006);
+                    e = testGcoder.calcEValue(testGcode[j-1], testGcode[j], e);
                 }
                 
-                tmpGcode = "G1 X" + ofToString(testGcode[k + j*180].x) + " Y" + ofToString(testGcode[k+j*180].y) + " Z" + ofToString(testGcode[k+ j*180].z + zOffset) + " E" + ofToString(e) + " F900\n";
+                tmpGcode = "G1 X" + ofToString(testGcode[j].x) + " Y" + ofToString(testGcode[j].y) + " Z" + ofToString(testGcode[j].z + zOffset + heightTest*i) + " E" + ofToString(e) + " F350\n";
+                
+                
+            }else if(i%2 == 1){
+                if(j == 0){
+                    e += 0;
+                }else{
+                    e = testGcoder.calcEValue(testGcode[5*180-j], testGcode[5*180-j-1], e);
+                }
+                
+                tmpGcode = "G1 X" + ofToString(testGcode[5*180-j-1].x) + " Y" + ofToString(testGcode[5*180-j-1].y) + " Z" + ofToString(testGcode[5*180-j-1].z + zOffset + heightTest*i) + " E" + ofToString(e) + " F350\n";
+            }
+            
+            testGcoder.addGcode(tmpGcode);
+            
+            
+            
+        }
+    }
+    
+    /*
+    for(int i=0; i<5; i++){
+        
+        for(int j=0; j<5; j++){
+            for(int k=0; k<180; k+=1){
+                
+                
+                if(i%2 == 0){
+                    if(j == 0){
+                        e += 0;
+                    }else{
+                        //e += float(testGcode[k+j*180].distance(testGcode[k+j*180-1])/0.223 * 0.006);
+                        e = testGcoder.calcEValue(testGcode[k+j*180-1], testGcode[k+j*180], e);
+                    }
+                    
+                    tmpGcode = "G1 X" + ofToString(testGcode[k + j*180].x) + " Y" + ofToString(testGcode[k+j*180].y) + " Z" + ofToString(testGcode[k+ j*180].z + zOffset + heightTest*i) + " E" + ofToString(e) + " F600\n";
 
+                }else if(i%2 == 1){
+                    if(j == 0){
+                        e += 0;
+                    }else{
+                        e = testGcoder.calcEValue(testGcode[(j+1)*180] - k], testGcode[(j+1)*180 - (k+1)], e);
+                    }
+                    
+                    tmpGcode = "G1 X" + ofToString(testGcode[(j+1)*180-k].x) + " Y" + ofToString(testGcode[(j+1)*180 -k].y)) + " Z" + ofToString(testGcode[(j+1)*180)
+
+                    
+                    
+                    
+                }
+                
                 testGcoder.addGcode(tmpGcode);
 
                 
             }
         }
     }
+    */
     
     testGcoder.finishGcode();
     testGcoder.outputFile();
@@ -361,91 +434,55 @@ void ofApp::generateOrnament(){
     
     ornament.clear();
     
+    
+    //ornament will be added to basePoint of half Sphere
+    ofVec3f basePoint = debugPoint[posX*(finenessSphere+1) + posY];
+    
     const int fineness = 360;
     ofVec3f baseOrnament[(fineness+1)];
-    //int radius = 15;
-    int radius = ornamentRadius;
     
-    //int inRadius = 1;
+    
+    //radius of ornament
+    int radius = ornamentRadius;
+    //radius of sin wave
     int inRadius = insideRadius;
     
-    //int heightOfOrnament = 10;
+    //height of ornament
     int heightOfOrnament = heightOrnament;
+    //offset is layer height
     float offset = 0.15;
-    
-    for(int i=0; i<(fineness+1); i++){
-        ofVec3f tmp = ofVec3f(radius * cos(ofDegToRad(float(float(360.0/fineness) * i))), radius * sin(ofDegToRad(float(float(360.0/fineness) * i))), 20);
-        
-        ofVec3f baseVec = ofVec3f(0,0,20) - tmp;
-        baseVec = baseVec.normalize();
-        
-        tmp += baseVec * inRadius * sin(ofDegToRad(360/30 * (i%30)));
-        
-        tmp *= float(radiusHalfSphere/tmp.length());
-
-        //ornament.push_back(tmp);
-        baseOrnament[i] = tmp;
-    }
+   
+    //for rotating
+    float angleForRotate = ofVec3f(0, 0, 1).angle(basePoint);
+    ofVec3f axisVec = ofVec3f(0,0,1).getPerpendicular(basePoint);
     
     
+    //for layering
+    ofVec3f tmpAxis = basePoint;
+    basePoint.normalize();
     
-    for(float j=0; j<heightOfOrnament; j+=offset){
+    //create ornament layer
+    for(float j=0; j<heightOfOrnament - offset; j+=offset){
         
         for(int i=0; i<(fineness+1); i++){
-            ofVec3f tmp = ofVec3f(radius * cos(ofDegToRad(float(float(360.0/fineness) * i) + float(j*5))), radius * sin(ofDegToRad(float(float(360.0/fineness) * i) + float(j*5))), 20);
             
-            ofVec3f baseVec = ofVec3f(0,0,20) - tmp;
-            //baseVec = baseVec.normalize();
+            float angle = float(float(360.0/fineness) * i) + float(j*decreasingOrnament);
+            float tmpRadius = radius * float((heightOfOrnament-j)/heightOfOrnament);
             
-            baseVec *= float(j/(heightOfOrnament + decreasingOrnament));
+            ofVec3f tmp = ofVec3f(tmpRadius * cos(ofDegToRad(angle)), tmpRadius * sin(ofDegToRad(angle)), 120);
+            ofVec3f baseVec = ofVec3f(0,0,120) - tmp;
+            baseVec.normalize();
+            tmp += baseVec * inRadius * sin(ofDegToRad(360/30 * (i%30)));
+            int baseSphereRadius = 100;
+            tmp *= float(baseSphereRadius/tmp.length());
             
             
-            ofVec3f result = baseOrnament[i];
-            result += baseVec;
-            result.z += j;
-            
-            ornament.push_back(result);
-        }
-    }
-    
-    
-
-    ornamentGcoder.initGcode();
-    float zOffset = 2.8;
-    
-    
-    string tmpGcode = "G1 Z50 F1800\n";
-    tmpGcode += "G1 X" + ofToString(ornament[0].x) + " Y" + ofToString(ornament[0].y) + " F1800\n";
-    tmpGcode += "G1 Z" + ofToString(ornament[0].z + zOffset) + " F1800\n";
-    tmpGcode += "T0\n";
-    ornamentGcoder.addGcode(tmpGcode);
-    
-
-    for(int j=0; j<int(heightOfOrnament/offset); j++){
-        
-        tmpGcode = "; layer " + ofToString(j) + "\n";
-        ornamentGcoder.addGcode(tmpGcode);
-        
-        for(int i=0; i<(fineness+1); i++){
-            ofVec3f tmp = ornament[j*(fineness+1) + i];
-            
-            tmpGcode = "G1 X" + ofToString(tmp.x) + " Y" + ofToString(tmp.y) + " Z" + ofToString(tmp.z + zOffset);
-            
-            if(i ==0){
-                tmpGcode += " F1800\n";
-            }else if(i == 1){
-                tmpGcode += " E" + ofToString(float(i/170.0 + fineness*j/170.0));
-                tmpGcode += " F1800\n";
-            }else{
-                tmpGcode += " E" + ofToString(float(i/170.0 + fineness*j/170.0)) + "\n";
-            }
-            ornamentGcoder.addGcode(tmpGcode);
+            tmp.rotate(angleForRotate, axisVec);
+            tmp += basePoint * j;
+            ornament.push_back(tmp);
             
         }
     }
-
-    ornamentGcoder.finishGcode();
-    //ornamentGcoder.outputFile();
 }
 //--------------------------------------------------------------
 void ofApp::generateTuno(){
@@ -710,7 +747,8 @@ void ofApp::setMeshPolar(){
     debugPoint.clear();
 
     int fineness = finenessSphere;
-    float newRadius = radiusHalfSphere;
+    //float newRadius = radiusHalfSphere;
+    float newRadius = 100;
     
     
     /*
@@ -855,6 +893,61 @@ double ofApp::func(float _x, float _y){
 void ofApp::keyPressed(int key){
     
     if(key == 's'){
+        
+        //output gcode file as ornment
+        float offset = 0.15;
+        int heightOfOrnament = heightOrnament;
+        int fineness = 360;
+        ornamentGcoder.initGcode();
+        float zOffset = 2.8;
+        float eValue = 0.0;
+        
+        
+        string tmpGcode = "G1 Z50 F1800\n";
+        tmpGcode += "G1 X" + ofToString(ornament[0].x) + " Y" + ofToString(ornament[0].y) + " F1800\n";
+        tmpGcode += "G1 Z" + ofToString(ornament[0].z + zOffset) + " F1800\n";
+        tmpGcode += "T0\n";
+        ornamentGcoder.addGcode(tmpGcode);
+        
+        
+        for(int j=0; j<int(heightOfOrnament/offset)-1; j++){
+            
+            tmpGcode = "; layer " + ofToString(j) + "\n";
+            tmpGcode += "G92 E0\n";
+            eValue = 0.0;
+            
+            ornamentGcoder.addGcode(tmpGcode);
+            
+            for(int i=0; i<(fineness+1); i++){
+                ofVec3f tmp = ornament[j*(fineness+1) + i];
+                
+                //set E Value
+                if(i == 0){
+                    eValue += 0.0;
+                }else{
+                    eValue = ornamentGcoder.calcEValue(ornament[j*(fineness+1) + i-1], ornament[j*(fineness+1) + i], eValue);
+                }
+                
+                
+                tmpGcode = "G1 X" + ofToString(tmp.x) + " Y" + ofToString(tmp.y) + " Z" + ofToString(tmp.z + zOffset);
+                
+                if(i ==0){
+                    tmpGcode += " F1800\n";
+                }else if(i == 1){
+                    //tmpGcode += " E" + ofToString(float(i/170.0 + fineness*j/170.0));
+                    tmpGcode += " E" + ofToString(eValue);
+                    
+                    tmpGcode += " F1800\n";
+                }else{
+                    //tmpGcode += " E" + ofToString(float(i/170.0 + fineness*j/170.0)) + "\n";
+                    tmpGcode += " E" + ofToString(eValue) + "\n";
+                }
+                ornamentGcoder.addGcode(tmpGcode);
+                
+            }
+        }
+        
+        ornamentGcoder.finishGcode();
         ornamentGcoder.outputFile();
         
     }

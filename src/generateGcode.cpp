@@ -13,8 +13,19 @@ generateGcode::generateGcode(){
 
 generateGcode::generateGcode(string _name){
     fileName = _name;
+    
+    layerHeight = 0.15;
+    extruderDiameter = 0.4;
+    filamentDiameter = 1.75;
 }
 
+generateGcode::generateGcode(string _name, float _layerHeight){
+    fileName = _name;
+    
+    layerHeight = _layerHeight;
+    extruderDiameter = 0.4;
+    filamentDiameter = 1.75;
+}
 
 
 
@@ -61,5 +72,17 @@ void generateGcode::outputFile(){
 
 void generateGcode::setFilename(string _name){
     fileName = _name;
+}
+
+void generateGcode::setLayerHeight(float _layerHeight){
+    layerHeight = _layerHeight;
+}
+
+float generateGcode::calcEValue(ofVec3f point1, ofVec3f point2, float e){
+    float tmpE = ((point1.distance(point2) * layerHeight * extruderDiameter)) / (PI * float(filamentDiameter/2.0) * float(filamentDiameter/2.0));
+    
+
+    return (e + tmpE);
+    
 }
 
